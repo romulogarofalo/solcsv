@@ -7,6 +7,8 @@ defmodule SolcsvWeb.Router do
 
   scope "/api", SolcsvWeb do
     pipe_through :api
+
+    post "/upload/csv", PartnerController, :upload
   end
 
   # Enables LiveDashboard only for development
