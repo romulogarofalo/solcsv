@@ -36,3 +36,5 @@ config :solcsv, SolcsvAdapters.ViacepAdapter,
   timeout: 10_000
 
 config :tesla, adapter: TeslaMock
+
+config :solcsv, Oban, testing: :inline

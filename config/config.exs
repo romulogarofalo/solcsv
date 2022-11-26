@@ -53,6 +53,12 @@ config :solcsv, SolcsvAdapters.ViacepAdapter,
   base_url: "https://viacep.com.br/ws/",
   timeout: 10_000
 
+config :solcsv, Oban,
+  repo: Solcsv.Repo,
+  plugins: [Oban.Plugins.Pruner],
+  queues: [default: 10]
+
+config :tesla, adapter: Tesla.Adapter.Hackney
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

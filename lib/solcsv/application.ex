@@ -15,9 +15,10 @@ defmodule Solcsv.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Solcsv.PubSub},
       # Start the Endpoint (http/https)
-      SolcsvWeb.Endpoint
+      SolcsvWeb.Endpoint,
       # Start a worker by calling: Solcsv.Worker.start_link(arg)
       # {Solcsv.Worker, arg}
+      {Oban, Application.fetch_env!(:solcsv, Oban)}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
