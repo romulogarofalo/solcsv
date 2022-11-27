@@ -5,6 +5,7 @@ defmodule Solcsv.Jobs.InsertCsvPartners do
   alias Solcsv.Partner
   alias Solcsv.Ports.Viacep
   alias Solcsv.Ports.Types.ViacepInput
+  alias Solcsv.Repo
 
   alias NimbleCSV.RFC4180, as: CSV
 
@@ -17,7 +18,10 @@ defmodule Solcsv.Jobs.InsertCsvPartners do
     File.stream!(path)
     |> CSV.parse_stream()
     |> Enum.map(fn [cnpj, social_reason, fantasy_name, cellphone, email, cep] ->
-      changeset = Partner.create_changeset(
+      changeset = Partner
+      |> Repo.get_by(cnpj: cnpj)
+      |> build_changeset_parnter()
+      |> Partner.changeset(
         %{
           cnpj: cnpj,
           email: email,
@@ -28,16 +32,23 @@ defmodule Solcsv.Jobs.InsertCsvPartners do
         }
       )
 
-      formated_cep = Ecto.Changeset.get_field(changeset, :cep) |> IO.inspect()
+      formated_cep = Ecto.Changeset.get_field(changeset, :cep)
+      {:ok, %{"localidade" => city, "uf" => state}} = Viacep.check_cep(%ViacepInput{cep: formated_cep})
 
-      {:ok, %{"localidade" => city, "uf" => state}} = Viacep.check_cep(%ViacepInput{cep: formated_cep}) |> IO.inspect()
       Partner.add_city_and_state(changeset, city, state)
-      |> Solcsv.Repo.insert_or_update() # select antes para saber se tem que mandar email
-      |> IO.inspect()
+      |> Repo.insert_or_update()
+
+      send_email(changeset)
 
       File.rm!(path)
     end)
 
     :ok
   end
+
+  defp build_changeset_parnter(nil), do: %Partner{}
+  defp build_changeset_parnter(partner), do: partner
+
+  defp send_email(%Ecto.Changeset{data: %{__meta__: %{state: :built}}}), do: Logger.info("email sent")
+  defp send_email(_), do: nil
 end
