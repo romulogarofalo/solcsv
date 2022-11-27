@@ -3,6 +3,7 @@ defmodule SolcsvAdapters.ViacepAdapter do
   @behaviour Solcsv.Ports.Viacep
 
   @impl true
+  @spec check_cep(ViacepInput.t()) :: {:ok, map()} | {:error, :not_found | :bad_request | :timeout}
   def check_cep(%ViacepInput{cep: cep}) do
     query = "#{cep}/json/"
 
@@ -15,6 +16,8 @@ defmodule SolcsvAdapters.ViacepAdapter do
         {:ok, body}
       {:ok, %{status: 400}} ->
         {:error, :bad_request}
+      {:ok, %{status: 408}} ->
+        {:error, :timeout}
       result ->
         result
     end
