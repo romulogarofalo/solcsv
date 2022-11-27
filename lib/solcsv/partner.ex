@@ -15,8 +15,8 @@ defmodule Solcsv.Partner do
     timestamps()
   end
 
-  def create_changeset(params \\ %{}) do
-    cast(%__MODULE__{}, params, [:cnpj, :social_reason, :fantasy_name, :cellphone, :email, :cep])
+  def changeset(changeset, params \\ %{}) do
+    cast(changeset, params, [:cnpj, :social_reason, :fantasy_name, :cellphone, :email, :cep])
     |> validate_required([:cnpj, :social_reason, :fantasy_name, :cellphone, :email, :cep])
     |> validate_format(:cnpj, ~r/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/)
     |> format_fields(:cep)
@@ -35,6 +35,7 @@ defmodule Solcsv.Partner do
     put_change(changeset, field, field_clear)
   end
 
+  defp take_off_dots_and_traces(nil), do: ""
   defp take_off_dots_and_traces(input) do
     input
     |> String.codepoints()
