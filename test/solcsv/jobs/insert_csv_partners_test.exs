@@ -6,8 +6,6 @@ defmodule Solcsv.Jobs.InsertCsvPartnersTest do
 
 	alias Solcsv.Jobs.InsertCsvPartners
   alias Solcsv.Partner
-  alias Solcsv.Ports.Viacep
-  alias Solcsv.Ports.Types.ViacepInput
   alias SolcsvAdapters.ViacepAdapterMock
 
   describe "perform/1" do
@@ -16,17 +14,25 @@ defmodule Solcsv.Jobs.InsertCsvPartnersTest do
     # end
 
     test "update register on database" do
-      final_path = "priv/static/#{Ecto.UUID.generate}.csv"
-      {:ok, _} <- File.copy("priv/static/test.csv", final_path),
+      dir = System.tmp_dir!()
+      final_path = Path.join(dir, "#{Ecto.UUID.generate}.csv")
 
-      Partner.create_changeset(%{
-				cnpj: "16.470.954/0001-06",
-				social_reason: "123123123",
-				fantasy_name: "123123123",
-				cellphone: "11111111111",
-				cep: "11111111",
-				email: "123@123.com"
-			})
+      File.copy("priv/static/test.csv", final_path)
+
+      %{
+        id: id,
+        cnpj: cnpj
+      } = Partner.changeset(
+        %Partner{},
+        %{
+          cnpj: "16.470.954/0001-06",
+          social_reason: "123123123",
+          fantasy_name: "123123123",
+          cellphone: "11111111111",
+          cep: "11111111",
+          email: "123@123.com"
+			  }
+      )
       |> Partner.add_city_and_state("Santos", "SP")
       |> Repo.insert!()
 
@@ -47,8 +53,17 @@ defmodule Solcsv.Jobs.InsertCsvPartnersTest do
 
       perform_job(InsertCsvPartners, %{"path" => final_path})
 
-      Repo.all(Partner) |> IO.inspect()
+      assert [updated_partner] = Repo.all(Partner)
 
+      assert updated_partner.id == id
+      assert updated_partner.cnpj == cnpj
+      assert updated_partner.email == "atendimento@soleterno.com"
+      assert updated_partner.social_reason == "Sol Eterno2"
+      assert updated_partner.fantasy_name == "Sol Eterno LTDA"
+      assert updated_partner.cellphone == "21982079901"
+      assert updated_partner.cep == "22783115"
+      assert updated_partner.city == "Santos"
+      assert updated_partner.state == "SP"
     end
   end
 end
