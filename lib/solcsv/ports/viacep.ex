@@ -1,7 +1,7 @@
 defmodule Solcsv.Ports.Viacep do
   alias Solcsv.Ports.Types.ViacepInput
 
-  @callback check_cep(ViacepInput.t()) :: {:ok, any}
+  @callback check_cep(ViacepInput.t()) :: {:ok, map()} | {:error, :not_found | :bad_request | :timeout}
 
   @spec check_cep(ViacepInput.t()) :: {:ok, map()} | {:error, :not_found | :timeout | :bad_request}
   def check_cep(%ViacepInput{} = input) do
