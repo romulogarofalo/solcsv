@@ -32,18 +32,26 @@ defmodule Solcsv.Jobs.InsertCsvPartners do
         }
       )
 
-      formated_cep = Ecto.Changeset.get_field(changeset, :cep)
-      {:ok, %{"localidade" => city, "uf" => state}} = Viacep.check_cep(%ViacepInput{cep: formated_cep})
-
-      Partner.add_city_and_state(changeset, city, state)
-      |> Repo.insert_or_update()
-
-      send_email(changeset)
-
-      File.rm(path)
+      with {:ok, cep} <- get_cep_changeset(changeset),
+      {:ok, %{"localidade" => city, "uf" => state}} <- Viacep.check_cep(%ViacepInput{cep: cep}),
+      changeset_to_insert <- Partner.add_city_and_state(changeset, city, state),
+      {:ok, _} <- Repo.insert_or_update(changeset_to_insert) do
+        send_email(changeset)
+        File.rm(path)
+      else
+        {:error, :invalid_changeset} -> Logger.error("#{__MODULE__} error: invalid_changeset, changeset: #{inspect(changeset)}")
+        {:error, :not_found} -> Logger.error("#{__MODULE__} error: not_found")
+        {:error, :timeout} -> Logger.error("#{__MODULE__} error: timeout")
+        {:error, :bad_request} -> Logger.error("#{__MODULE__} error: bad_request")
+        error -> Logger.error("#{__MODULE__} error: #{inspect(error)}")
+      end
     end)
-
     :ok
+  end
+
+  defp get_cep_changeset(%{valid?: false}), do: {:error, :invalid_changeset}
+  defp get_cep_changeset(%{valid?: true} = changeset) do
+    {:ok, Ecto.Changeset.get_field(changeset, :cep)}
   end
 
   defp build_changeset_parnter(nil), do: %Partner{}
