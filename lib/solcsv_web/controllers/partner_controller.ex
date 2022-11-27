@@ -4,7 +4,8 @@ defmodule SolcsvWeb.PartnerController do
   alias Solcsv.Jobs.InsertCsvPartners
 
   def upload(conn, %{"file" => file}) do
-    final_path = "priv/static/#{Ecto.UUID.generate}.csv"
+    dir = System.tmp_dir!()
+    final_path = Path.join(dir, "#{Ecto.UUID.generate}.csv")
 
     with {:ok, _} <- File.copy(file.path, final_path),
       {:ok, job} <- create_job(final_path),

@@ -40,7 +40,7 @@ defmodule Solcsv.Jobs.InsertCsvPartners do
 
       send_email(changeset)
 
-      File.rm!(path)
+      File.rm(path)
     end)
 
     :ok

@@ -81,5 +81,4 @@ defmodule Solcsv.PartnerTest do
 			}
 		end
 	end
-
 end
