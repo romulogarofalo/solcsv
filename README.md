@@ -56,6 +56,11 @@ To run locally, simply run the following command:
 ```sh
 docker-compose up
 ```
+## Running Migrations
+To setup the database, run the following command:
+```sh
+mix ecto.migrate
+```
 ## Running Tests
 To run the tests, run the following command:
 ```sh
