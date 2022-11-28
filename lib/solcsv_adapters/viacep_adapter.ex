@@ -1,4 +1,9 @@
 defmodule SolcsvAdapters.ViacepAdapter do
+  @moduledoc """
+  Adapter to make requests to viacep that is an API
+  to get the address info using the cep
+  """
+
   alias Solcsv.Ports.Types.ViacepInput
   @behaviour Solcsv.Ports.Viacep
 

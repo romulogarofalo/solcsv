@@ -1,4 +1,8 @@
 defmodule Solcsv.Ports.Viacep do
+  @moduledoc """
+  port to use the adapter of Viacep
+  """
+
   alias Solcsv.Ports.Types.ViacepInput
 
   @callback check_cep(ViacepInput.t()) :: {:ok, map()} | {:error, :not_found | :bad_request | :timeout}

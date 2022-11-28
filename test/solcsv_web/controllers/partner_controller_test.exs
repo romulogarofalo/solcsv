@@ -1,13 +1,12 @@
 defmodule SolcsvWeb.PartnerControllerTest do
-  # use Solcsv.DataCase
-	use SolcsvWeb.ConnCase
+  use SolcsvWeb.ConnCase
   use Oban.Testing, repo: Solcsv.Repo
 
   import ExUnit.CaptureLog
   import Hammox
   alias SolcsvAdapters.ViacepAdapterMock
 
-	describe "/upload/csv" do
+  describe "/upload/csv" do
     test "upload csv", %{conn: conn} do
       upload = %Plug.Upload{path: "priv/static/test.csv", filename: "test.csv"}
 

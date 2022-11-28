@@ -1,4 +1,9 @@
 defmodule Solcsv.Jobs.InsertCsvPartners do
+  @moduledoc """
+  job to parse the csv validate the data to insert or update
+  a partner on database
+  """
+
   use Oban.Worker, queue: "default", max_attempts: 3
   require Logger
 
@@ -17,7 +22,7 @@ defmodule Solcsv.Jobs.InsertCsvPartners do
   }) do
     File.stream!(path)
     |> CSV.parse_stream()
-    |> Enum.map(fn [cnpj, social_reason, fantasy_name, cellphone, email, cep] ->
+    |> Enum.each(fn [cnpj, social_reason, fantasy_name, cellphone, email, cep] ->
       changeset = Partner
       |> Repo.get_by(cnpj: cnpj)
       |> build_changeset_parnter()

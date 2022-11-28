@@ -5,7 +5,7 @@ defmodule Solcsv.Jobs.InsertCsvPartnersTest do
   import ExUnit.CaptureLog
   import Hammox
 
-	alias Solcsv.Jobs.InsertCsvPartners
+  alias Solcsv.Jobs.InsertCsvPartners
   alias Solcsv.Partner
   alias SolcsvAdapters.ViacepAdapterMock
 
@@ -66,7 +66,7 @@ defmodule Solcsv.Jobs.InsertCsvPartnersTest do
           cellphone: "11111111111",
           cep: "11111111",
           email: "123@123.com"
-			  }
+        }
       )
       |> Partner.add_city_and_state("Santos", "SP")
       |> Repo.insert!()
@@ -118,7 +118,7 @@ defmodule Solcsv.Jobs.InsertCsvPartnersTest do
           cellphone: "11111111111",
           cep: "11111111",
           email: "123@123.com"
-			  }
+        }
       )
       |> Partner.add_city_and_state("Santos", "SP")
       |> Repo.insert!()

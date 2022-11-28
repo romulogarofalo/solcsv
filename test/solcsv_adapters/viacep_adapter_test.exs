@@ -1,8 +1,8 @@
 defmodule SolcsvAdapters.ViacepAdapterTest do
-	use ExUnit.Case
+  use ExUnit.Case
   import Hammox
 
-	alias SolcsvAdapters.ViacepAdapter
+  alias SolcsvAdapters.ViacepAdapter
   alias Solcsv.Ports.Types.ViacepInput
 
   describe "check_cep/1" do
@@ -26,7 +26,7 @@ defmodule SolcsvAdapters.ViacepAdapterTest do
         headers: headers,
         opts: opts
       } = env, _ ->
-        assert opts == [adapter: [recv_timeout: 10000]]
+        assert opts == [adapter: [recv_timeout: 10_000]]
         assert url == "testurl/11050100/json/"
         assert headers == []
 
@@ -54,7 +54,7 @@ defmodule SolcsvAdapters.ViacepAdapterTest do
         headers: headers,
         opts: opts
       } = env, _ ->
-        assert opts == [adapter: [recv_timeout: 10000]]
+        assert opts == [adapter: [recv_timeout: 10_000]]
         assert url == "testurl/11050100/json/"
         assert headers == []
 
@@ -71,7 +71,7 @@ defmodule SolcsvAdapters.ViacepAdapterTest do
         headers: headers,
         opts: opts
       } = env, _ ->
-        assert opts == [adapter: [recv_timeout: 10000]]
+        assert opts == [adapter: [recv_timeout: 10_000]]
         assert url == "testurl/11050100/json/"
         assert headers == []
 
@@ -88,7 +88,7 @@ defmodule SolcsvAdapters.ViacepAdapterTest do
         headers: headers,
         opts: opts
       } = env, _ ->
-        assert opts == [adapter: [recv_timeout: 10000]]
+        assert opts == [adapter: [recv_timeout: 10_000]]
         assert url == "testurl/11050100/json/"
         assert headers == []
 
