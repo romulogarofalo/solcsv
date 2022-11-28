@@ -49,7 +49,8 @@ defmodule Solcsv.MixProject do
       {:hackney, "~> 1.17"},
       {:tesla, "~> 1.4"},
       {:hammox, "~> 0.5", only: [:test, :dev]},
-      {:nimble_csv, "~> 1.2"}
+      {:nimble_csv, "~> 1.2"},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
     ]
   end
 
