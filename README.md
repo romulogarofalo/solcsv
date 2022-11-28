@@ -1,14 +1,16 @@
 # Solcsv
 
 ## Table of Contents
-- [Introduction](#introduction)
-- [Technologies](#Technologies)
+- [Solcsv](#solcsv)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Technologies](#technologies)
 - [Getting Started](#getting-started)
   - [Running Locally](#running-locally)
   - [Running Tests](#running-tests)
-  - [Running Livebook](#running-livebook)
+  - [Running The Server](#running-the-server)
 - [Available Routes](#available-routes)
-- [Useful Links](#useful-links)  
+  - [Useful Links](#useful-links)
   
 ## Introduction
 **Solcsv** is a back-end to upload csv of partners and insert and update on database new and old partners
@@ -20,7 +22,6 @@ What was used:
 - **[Postgres](https://www.postgresql.org/)** to store the data and **[Ecto](https://hexdocs.pm/ecto/Ecto.html)** as a """ORM""" (but is not a ORM is a DSL).
 - **[Ex_unit](https://hexdocs.pm/ex_unit/main/ExUnit.html)** to run tests.
 - **[ASDF](https://asdf-vm.com/)** to manage multiple versions
-- **[LiveBook](https://livebook.dev/)** To easily create scripts of a business cycle
 
 # Getting Started
 To get started, you should install **Docker**, **Docker Compose**, and **ASDF**.
@@ -65,12 +66,6 @@ To run the tests, run the following command:
 ```sh
 mix phx.server
 ```
-
-## Running Livebook
-when docker-compose is up the Livebook will be up on [localhost:8080](localhost:8080) and to make the requests the server will need to be up on your computer (not the docker)
-
-Password is `solcsv-password`
-
 
 # Available Routes
 
